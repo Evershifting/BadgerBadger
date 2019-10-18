@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Grid : MonoBehaviour
 {
     [SerializeField] private int _sizeX, _sizeY;
     [SerializeField] private GameObject _cellPrefab, _snakeSegment, _snakeHead;
 
-    public List<Cell> Cells  = new List<Cell>();
+    private List<Cell> Cells = new List<Cell>();
 
     private void Start()
     {
@@ -33,20 +35,19 @@ public class Grid : MonoBehaviour
     {
         GameObject go1, go2;
         go1 = Instantiate(_snakeHead);
-        go1.GetComponent<SnakeHead>().Grid = this;
-        go1.GetComponent<SnakeHead>()._cell = GetCellByVector2(new Vector2(_sizeX / 2, _sizeY / 2));
-        go1.transform.position = go1.GetComponent<SnakeHead>()._cell.Position;
 
-        for (int i = 1 ; i <= _sizeY / 2; i++)
+        go1.GetComponent<SnakeSegment>()._cell = GetCellByVector2(new Vector2(_sizeX / 2, _sizeY / 2));
+        go1.transform.position = go1.GetComponent<SnakeSegment>()._cell.Position;
+        GetCellByVector2(new Vector2(_sizeX / 2, _sizeY / 2)).IsEmpty = false;
+
+        for (int i = 1; i <= _sizeY / 2; i++)
         {
             go2 = Instantiate(_snakeSegment);
             go2.GetComponent<SnakeSegment>()._cell = GetCellByVector2(new Vector2(_sizeX / 2, _sizeY / 2 - i));
             go2.transform.position = go2.GetComponent<SnakeSegment>()._cell.Position;
-            if (i==1)
-                go1.GetComponent<SnakeHead>().PreviousSegment = go2.GetComponent<SnakeSegment>();
-            else
-                go1.GetComponent<SnakeSegment>().PreviousSegment = go2.GetComponent<SnakeSegment>();
+            go1.GetComponent<SnakeSegment>().PreviousSegment = go2.GetComponent<SnakeSegment>();
             go1 = go2;
+            GetCellByVector2(new Vector2(_sizeX / 2, _sizeY / 2 - i)).IsEmpty = false;
         }
     }
 
@@ -65,14 +66,19 @@ public class Grid : MonoBehaviour
             nextCellPosition.y = 0;
 
         if (nextCellPosition.x < 0)
-            nextCellPosition.x = _sizeX-1;
+            nextCellPosition.x = _sizeX - 1;
         if (nextCellPosition.y < 0)
-            nextCellPosition.y = _sizeY-1;
+            nextCellPosition.y = _sizeY - 1;
 
         return GetCellByVector2(nextCellPosition);
     }
     private Cell GetCellByVector2(Vector2 position)
     {
         return Cells[(int)position.x * _sizeY + (int)position.y];
+    }
+    public Cell GetEmptyCell()
+    {
+        List<Cell> emptyCells = Cells.Where(c => c.IsEmpty).ToList();
+        return emptyCells[Random.Range(0, emptyCells.Count)];
     }
 }

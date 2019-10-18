@@ -7,27 +7,26 @@ public class SnakeSegment : MonoBehaviour
     public SnakeSegment PreviousSegment;
     public Cell _cell;
 
-    public void Move(Vector3 destination)
+    private void OnEnable()
     {
-        if (PreviousSegment)
-            PreviousSegment.Move(transform.position);
+        if (FindObjectOfType<SnakeManager>())
+            FindObjectOfType<SnakeManager>()._snake.Add(this);
         else
-        {
-            if (_cell)
-                _cell.IsEmpty = true;
-        }
-        transform.position = destination;
+            Debug.Log("No SnakeManager for lil badger!");
     }
-    public void Move(Cell destination)
+
+    public virtual void Move(Cell destination)
     {
+        transform.position = destination.Position;
+
         if (PreviousSegment)
             PreviousSegment.Move(_cell);
         else
         {
-            if (_cell)
-                _cell.IsEmpty = true;
+            _cell.IsEmpty = true;
         }
+
         _cell = destination;
-        transform.position = destination.Position;
+        _cell.IsEmpty = false;
     }
 }
