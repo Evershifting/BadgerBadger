@@ -5,7 +5,7 @@ using UnityEngine;
 public class Cell : MonoBehaviour
 {
     private Vector2 _gridPosition;
-    private Grid _grid;
+    private GridManager _grid;
 
     public bool IsEmpty { get; set; } = true;
     public Vector3 Position => transform.position;
@@ -19,7 +19,7 @@ public class Cell : MonoBehaviour
         }
     }
 
-    public void Init(Grid grid, Vector2 gridPosition)
+    public void Init(GridManager grid, Vector2 gridPosition)
     {
         GridPosition = gridPosition;
         _grid = grid;
