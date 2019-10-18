@@ -26,7 +26,7 @@ public class BonusManager : MonoBehaviour
     {
         if (!grid.GetEmptyCell())
             return;
-        Debug.Log("SpawnBonus after gridcheck");
+
         float totalWeight = 0f;
         float usefulWeight = 0f;
 
@@ -40,7 +40,6 @@ public class BonusManager : MonoBehaviour
         {
             if (randomResult <= bonus.GenerationWeight + usefulWeight)
             {
-                Debug.Log("In if");
                 Bonus spawnedBonus = Instantiate(bonus, transform);
                 spawnedBonus.BonusManager = this;
                 Cell cell = grid.GetEmptyCell();
@@ -53,9 +52,16 @@ public class BonusManager : MonoBehaviour
             usefulWeight += bonus.GenerationWeight;
         }
     }
+    public void CleanBonuses()
+    {
+        foreach (Transform item in transform)
+        {
+            item.GetComponent<MonoBehaviour>().StopAllCoroutines();
+            Destroy(item.gameObject);
+        }
+    }
     public void ExecuteBonusEffect(Bonus bonus)
     {
         bonus.ExecuteBonus();
     }
-
 }

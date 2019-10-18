@@ -24,6 +24,7 @@ public abstract class Bonus : MonoBehaviour
 
     internal virtual void OnPickup()
     {
+        AudioManager.Instance.Pop();
         BonusManager.ExecuteBonusEffect(this);
     }
 

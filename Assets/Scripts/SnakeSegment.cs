@@ -52,9 +52,9 @@ public class SnakeSegment : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag=="Snake")
+        if (other.tag == "Snake")
         {
-            Debug.Log("Snaaake");
+            GameManager.Instance.GameOver();
         }
     }
 }

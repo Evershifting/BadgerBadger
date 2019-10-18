@@ -11,17 +11,36 @@ public class GridManager : MonoBehaviour
     [SerializeField] private GameObject _cellPrefab;
 
     private List<Cell> Cells = new List<Cell>();
+    private SnakeManager snakeManager;
 
     public int SizeX { get => _sizeX; private set => _sizeX = value; }
     public int SizeY { get => _sizeY; private set => _sizeY = value; }
-
-    private void Start()
+    public SnakeManager SnakeManager
     {
-        GenerateField(SizeX, SizeY);
-        //перепистаь на лейзи инит
-        FindObjectOfType<SnakeManager>().SpawnSnake();
+        get
+        {
+            if (snakeManager == null)
+                snakeManager = FindObjectOfType<SnakeManager>();
+            return snakeManager;
+        }
     }
 
+
+    public void InitiateLevel()
+    {
+        CleanGrid();
+        GenerateField(SizeX, SizeY);
+        SnakeManager.SpawnSnake();
+    }
+
+    public void CleanGrid()
+    {
+        for (int i = Cells.Count; i > 0; i--)
+        {
+            Destroy(Cells[i - 1].gameObject);
+            Cells.RemoveAt(Cells.Count - 1);
+        }
+    }
     private void GenerateField(int SizeX, int SizeY)
     {
         GameObject gameObject;

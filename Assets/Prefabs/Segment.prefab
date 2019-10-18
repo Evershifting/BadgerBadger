@@ -4711,7 +4711,7 @@ GameObject:
   - component: {fileID: 4757711936826461447}
   - component: {fileID: 4757711936826461444}
   - component: {fileID: 4757711936826461445}
-  - component: {fileID: 7524315880772203274}
+  - component: {fileID: 3597833159393183101}
   m_Layer: 0
   m_Name: Segment
   m_TagString: Snake
@@ -4808,7 +4808,7 @@ MonoBehaviour:
   _particleSystem: {fileID: 1289411218199116608}
   PreviousSegment: {fileID: 0}
   Cell: {fileID: 0}
---- !u!54 &7524315880772203274
+--- !u!54 &3597833159393183101
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
